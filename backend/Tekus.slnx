@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="IntegrationTests/IntegrationTests.csproj" Id="2cb4f79b-95e8-4f3a-bff2-179f4de4d644" />
+    <Project Path="UnitTests/UnitTests.csproj" Id="bb26d50c-8bb0-431d-b0c4-f6dd60da077a" />
+  </Folder>
+  <Project Path="src/Tekus.API/Tekus.API.csproj" />
+  <Project Path="src/Tekus.Application/Tekus.Application.csproj" />
+  <Project Path="src/Tekus.Domain/Tekus.Domain.csproj" />
+  <Project Path="src/Tekus.Infrastructure/Tekus.Infrastructure.csproj" />
+</Solution>
