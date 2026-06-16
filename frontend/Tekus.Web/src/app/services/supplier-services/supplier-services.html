@@ -1,14 +1,14 @@
 <div class="page">
   <header class="topbar">
-    <h1>Servicios{{ supplier() ? ' de ' + supplier()!.name : '' }}</h1>
-    <div class="topbar-actions">
-      <button type="button" (click)="openForm()">+ Nuevo servicio</button>
-      <a class="back-link" routerLink="/">&larr; Volver a proveedores</a>
+    <div class="heading">
+      <a class="back-link" routerLink="/">&larr; Proveedores</a>
+      <h1>Servicios{{ supplier() ? ' de ' + supplier()!.name : '' }}</h1>
     </div>
+    <button type="button" class="btn-primary" (click)="openForm()">+ Nuevo servicio</button>
   </header>
 
   @if (isFormOpen()) {
-    <form class="service-form" (ngSubmit)="submitForm()" #serviceForm="ngForm">
+    <form class="card service-form" (ngSubmit)="submitForm()" #serviceForm="ngForm">
       <div class="field">
         <label for="serviceName">Nombre</label>
         <input id="serviceName" name="serviceName" type="text" [(ngModel)]="newServiceName" required />
@@ -32,36 +32,60 @@
       }
 
       <div class="form-actions">
-        <button type="button" (click)="cancelForm()">Cancelar</button>
-        <button type="submit" [disabled]="isSaving()">
+        <button type="button" class="btn-ghost" (click)="cancelForm()">Cancelar</button>
+        <button type="submit" class="btn-primary" [disabled]="isSaving()">
           {{ isSaving() ? 'Guardando...' : 'Guardar' }}
         </button>
       </div>
     </form>
   }
 
-  @if (isLoading()) {
-    <p>Cargando servicios...</p>
-  } @else if (errorMessage()) {
-    <p class="error">{{ errorMessage() }}</p>
-  } @else if (services().length === 0) {
-    <p>Este proveedor no tiene servicios registrados.</p>
-  } @else {
-    <table class="services-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Tarifa por hora</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (service of services(); track service.id) {
+  <section class="card">
+    <div class="toolbar">
+      <input
+        type="search"
+        placeholder="Buscar por nombre..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    @if (isLoading()) {
+      <p class="state-message">Cargando servicios...</p>
+    } @else if (errorMessage()) {
+      <p class="state-message error">{{ errorMessage() }}</p>
+    } @else if (services().length === 0) {
+      <p class="state-message">No hay servicios que coincidan con la búsqueda.</p>
+    } @else {
+      <table class="data-table">
+        <thead>
           <tr>
-            <td>{{ service.name }}</td>
-            <td>{{ service.hourlyRate | number: '1.2-2' }}</td>
+            <th (click)="sort('name')" class="sortable">
+              Nombre
+              <span class="sort-icon" [class.active]="sortBy() === 'name'">{{ sortBy() === 'name' && sortDescending() ? '▼' : '▲' }}</span>
+            </th>
+            <th (click)="sort('hourlyRate')" class="sortable">
+              Tarifa por hora
+              <span class="sort-icon" [class.active]="sortBy() === 'hourlyRate'">{{ sortBy() === 'hourlyRate' && sortDescending() ? '▼' : '▲' }}</span>
+            </th>
           </tr>
-        }
-      </tbody>
-    </table>
-  }
+        </thead>
+        <tbody>
+          @for (service of services(); track service.id) {
+            <tr>
+              <td>{{ service.name }}</td>
+              <td class="muted">{{ service.hourlyRate | number: '1.2-2' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <app-pagination
+        [pageNumber]="pageNumber()"
+        [totalPages]="totalPages()"
+        [totalCount]="totalCount()"
+        (pageChange)="onPageChange($event)"
+      />
+    }
+  </section>
 </div>

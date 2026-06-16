@@ -1,0 +1,8 @@
+<div class="pagination">
+  <span class="total">{{ totalCount }} resultado{{ totalCount === 1 ? '' : 's' }}</span>
+  <div class="controls">
+    <button type="button" class="page-btn" [disabled]="pageNumber <= 1" (click)="goToPrevious()">&larr;</button>
+    <span class="page-indicator">Página {{ pageNumber }} de {{ totalPages || 1 }}</span>
+    <button type="button" class="page-btn" [disabled]="pageNumber >= totalPages" (click)="goToNext()">&rarr;</button>
+  </div>
+</div>

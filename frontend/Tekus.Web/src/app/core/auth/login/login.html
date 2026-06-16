@@ -1,6 +1,9 @@
 <div class="login-page">
   <form class="login-card" (ngSubmit)="onSubmit()" #loginForm="ngForm">
-    <h1>Tekus</h1>
+    <div class="brand">
+      <span class="brand-mark">T</span>
+      <h1>Tekus</h1>
+    </div>
     <p class="subtitle">Inicia sesión para continuar</p>
 
     <label for="username">Usuario</label>
@@ -27,7 +30,7 @@
       <p class="error">{{ errorMessage() }}</p>
     }
 
-    <button type="submit" [disabled]="loginForm.invalid || isLoading()">
+    <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isLoading()">
       {{ isLoading() ? 'Ingresando...' : 'Ingresar' }}
     </button>
   </form>

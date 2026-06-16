@@ -26,4 +26,8 @@
     <Folder Include="Data\Configurations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="IntegrationTests" />
+  </ItemGroup>
+
 </Project>

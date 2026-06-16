@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tekus.Application.Common.Models;
 using Tekus.Application.Features.Services.Create;
 using Tekus.Application.Features.Services.GetBySupplier;
 using Tekus.Application.Features.Suppliers.GetAll;
@@ -14,11 +15,26 @@ namespace Tekus.API.Controllers
     [Authorize]
     public class SuppliersController(IMediator mediator) : ControllerBase
     {
-        /// <summary>Lists all suppliers.</summary>
+        /// <summary>Lists suppliers with pagination, sorting and search.</summary>
         [HttpGet]
-        public async Task<ActionResult<List<SupplierResponse>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<PagedResult<SupplierResponse>>> GetAll(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] bool sortDescending = false,
+            CancellationToken cancellationToken = default)
         {
-            var response = await mediator.Send(new GetSuppliersQuery(), cancellationToken);
+            var query = new GetSuppliersQuery
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                SearchTerm = search,
+                SortBy = sortBy,
+                SortDescending = sortDescending
+            };
+
+            var response = await mediator.Send(query, cancellationToken);
             return Ok(response);
         }
 
@@ -37,13 +53,29 @@ namespace Tekus.API.Controllers
             }
         }
 
-        /// <summary>Lists the services associated with a supplier.</summary>
+        /// <summary>Lists the services associated with a supplier, with pagination, sorting and search.</summary>
         [HttpGet("{id:guid}/services")]
-        public async Task<ActionResult<List<ServiceResponse>>> GetServices(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult<PagedResult<ServiceResponse>>> GetServices(
+            Guid id,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] bool sortDescending = false,
+            CancellationToken cancellationToken = default)
         {
             try
             {
-                var response = await mediator.Send(new GetServicesBySupplierQuery(id), cancellationToken);
+                var query = new GetServicesBySupplierQuery(id)
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    SearchTerm = search,
+                    SortBy = sortBy,
+                    SortDescending = sortDescending
+                };
+
+                var response = await mediator.Send(query, cancellationToken);
                 return Ok(response);
             }
             catch (NotFoundException ex)
