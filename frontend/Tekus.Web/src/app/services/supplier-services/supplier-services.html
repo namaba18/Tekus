@@ -1,0 +1,31 @@
+<div class="page">
+  <header class="topbar">
+    <h1>Servicios{{ supplier() ? ' de ' + supplier()!.name : '' }}</h1>
+    <a class="back-link" routerLink="/">&larr; Volver a proveedores</a>
+  </header>
+
+  @if (isLoading()) {
+    <p>Cargando servicios...</p>
+  } @else if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  } @else if (services().length === 0) {
+    <p>Este proveedor no tiene servicios registrados.</p>
+  } @else {
+    <table class="services-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tarifa por hora</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (service of services(); track service.id) {
+          <tr>
+            <td>{{ service.name }}</td>
+            <td>{{ service.hourlyRate | number: '1.2-2' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -10,6 +10,12 @@ namespace Tekus.Infrastructure.Repositories
         public Task<Service?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
             context.Services.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
+        public Task<List<Service>> GetBySupplierIdAsync(Guid supplierId, CancellationToken cancellationToken = default) =>
+            context.Services.AsNoTracking()
+                .Where(s => s.SupplierId == supplierId)
+                .OrderBy(s => s.Name)
+                .ToListAsync(cancellationToken);
+
         public void Add(Service service) => context.Services.Add(service);
     }
 }

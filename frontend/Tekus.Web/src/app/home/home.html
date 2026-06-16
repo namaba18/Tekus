@@ -27,7 +27,9 @@
         @for (supplier of suppliers(); track supplier.id) {
           <tr>
             <td>{{ supplier.nit }}</td>
-            <td>{{ supplier.name }}</td>
+            <td>
+              <a class="supplier-link" [routerLink]="['/suppliers', supplier.id, 'services']">{{ supplier.name }}</a>
+            </td>
             <td>
               @if (supplier.webPage) {
                 <a [href]="supplier.webPage" target="_blank" rel="noopener">{{ supplier.webPage }}</a>

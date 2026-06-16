@@ -6,6 +6,8 @@ namespace Tekus.Domain.Interfaces.Repositories
     {
         Task<Service?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
+        Task<List<Service>> GetBySupplierIdAsync(Guid supplierId, CancellationToken cancellationToken = default);
+
         void Add(Service service);
     }
 }

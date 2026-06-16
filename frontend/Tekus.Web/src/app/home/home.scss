@@ -43,6 +43,16 @@
   color: #444;
 }
 
+.supplier-link {
+  color: #7702ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.supplier-link:hover {
+  text-decoration: underline;
+}
+
 .error {
   color: #c00;
 }
