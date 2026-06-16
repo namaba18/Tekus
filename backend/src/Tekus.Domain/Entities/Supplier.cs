@@ -8,5 +8,7 @@ namespace Tekus.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string WebPage { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+
+        public ICollection<Service> Services { get; set; } = [];
     }
 }
