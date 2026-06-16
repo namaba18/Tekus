@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { API_BASE_URL } from '../api.config';
 import { LoginRequest, LoginResponse } from './auth.models';
 
 const TOKEN_KEY = 'tekus_token';
 const USERNAME_KEY = 'tekus_username';
-const API_BASE_URL = 'http://localhost:5259';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
