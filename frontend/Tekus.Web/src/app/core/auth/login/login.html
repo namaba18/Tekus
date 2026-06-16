@@ -1,0 +1,34 @@
+<div class="login-page">
+  <form class="login-card" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <h1>Tekus</h1>
+    <p class="subtitle">Inicia sesión para continuar</p>
+
+    <label for="username">Usuario</label>
+    <input
+      id="username"
+      name="username"
+      type="text"
+      [(ngModel)]="username"
+      required
+      autocomplete="username"
+    />
+
+    <label for="password">Contraseña</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      [(ngModel)]="password"
+      required
+      autocomplete="current-password"
+    />
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="loginForm.invalid || isLoading()">
+      {{ isLoading() ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+</div>
