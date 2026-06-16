@@ -14,9 +14,15 @@ namespace Tekus.Infrastructure.Email
         {
             using var client = new SmtpClient(_settings.Host, _settings.Port)
             {
-                EnableSsl = _settings.UseSsl,
-                Credentials = new NetworkCredential(_settings.Username, _settings.Password)
+                EnableSsl = _settings.UseSsl
             };
+
+            // Local dev SMTP servers (e.g. Papercut) don't require authentication;
+            // only attach credentials when a username is actually configured.
+            if (!string.IsNullOrEmpty(_settings.Username))
+            {
+                client.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            }
 
             using var message = new MailMessage
             {
