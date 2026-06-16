@@ -1,8 +1,44 @@
 <div class="page">
   <header class="topbar">
     <h1>Servicios{{ supplier() ? ' de ' + supplier()!.name : '' }}</h1>
-    <a class="back-link" routerLink="/">&larr; Volver a proveedores</a>
+    <div class="topbar-actions">
+      <button type="button" (click)="openForm()">+ Nuevo servicio</button>
+      <a class="back-link" routerLink="/">&larr; Volver a proveedores</a>
+    </div>
   </header>
+
+  @if (isFormOpen()) {
+    <form class="service-form" (ngSubmit)="submitForm()" #serviceForm="ngForm">
+      <div class="field">
+        <label for="serviceName">Nombre</label>
+        <input id="serviceName" name="serviceName" type="text" [(ngModel)]="newServiceName" required />
+      </div>
+
+      <div class="field">
+        <label for="hourlyRate">Tarifa por hora</label>
+        <input
+          id="hourlyRate"
+          name="hourlyRate"
+          type="number"
+          min="0.01"
+          step="0.01"
+          [(ngModel)]="newServiceHourlyRate"
+          required
+        />
+      </div>
+
+      @if (formError()) {
+        <p class="error">{{ formError() }}</p>
+      }
+
+      <div class="form-actions">
+        <button type="button" (click)="cancelForm()">Cancelar</button>
+        <button type="submit" [disabled]="isSaving()">
+          {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  }
 
   @if (isLoading()) {
     <p>Cargando servicios...</p>
